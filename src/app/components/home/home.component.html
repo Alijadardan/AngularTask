@@ -1,0 +1,32 @@
+<div class="navbar">
+    <div class="container">
+        <div class="navbar-header row d-flex justify-content-between">
+            <div class="navbar-logo d-flex">
+                <img src="../../../assets/img/logo.PNG" alt="Logo Nav">
+                <div class="dropdown ml-2 d-flex">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      {{ selectedCompany }}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a *ngFor="let company of companies" (click)="changeCompany(company.id, company.name)" class="dropdown-item">{{ company.name }}</a>
+                    </div>
+                  </div>
+            </div>
+            <div class="navbar-add d-flex">
+                <div class="navbar-tutorial mr-3">
+                    <a routerLink="/tutorial" class="btn btn-primary px-4">Tutorial</a>
+                </div>
+                <a class="add icon" title="Add" routerLink="add"></a>
+                <div class="logout pl-2 d-flex">
+                    <a (click)="Logout()"><img src="../../../assets/svg/logout.svg" alt=""></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="home-welcome">
+                <h1><span>Welcome, </span>{{ user }}.</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<app-list-activities></app-list-activities>

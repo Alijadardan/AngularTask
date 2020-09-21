@@ -1,0 +1,63 @@
+<div class="login">
+    <div class="container">
+        <div class="login-logo">
+            <img src="../../../assets/img/logo.PNG" alt="App Logo" />
+        </div>
+        <div class="login-form">
+            <div class="login-form__title">Log in</div>
+            <form #loginForm="ngForm" (ngSubmit)="OnSubmit(username.value, password.value)">
+                <div class="login-input-field">
+                    <input type="text" #username ngModel name="username" placeholder="Username" required />
+                </div>
+                <div class="login-input-field">
+                    <input type="password" #password ngModel name="password" placeholder="Password" required />
+                </div>
+                <div class="login-remember-me">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="remember" name="remember" value="1" />
+                        <span class="checkbox-custom rectangular"></span>
+                    </label>
+                    <label class="login-remember-me__label" for="remember">Remember Me</label>
+                </div>
+                <div class="login-submit">
+                    <button [disabled]="!loginForm.valid" class="btn-large btn-submit" type="submit" data-toggle="modal"
+                        data-target="#loginModal">
+                        Login
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+            aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 *ngIf="error" class="modal-title" id="loginModalLabel">Error</h5>
+                        <h5 *ngIf="!error" class="modal-title" id="loginModalLabel">
+                            Select Company
+                        </h5>
+                        <button *ngIf="error" type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form #loginForm="ngForm">
+                            <div *ngIf="error" class="red-text center error-message">
+                                Incorrect username or password
+                            </div>
+                            <app-spinner></app-spinner>
+                            <div *ngFor="let company of companies">
+                                <label>
+                                    <input data-dismiss="modal" (click)="selectCompany(company.id, company.name)" type="checkbox"
+                                        [value]="company.id" />
+                                    {{ company.name }}
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

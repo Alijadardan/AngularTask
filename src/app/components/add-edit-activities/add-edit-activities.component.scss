@@ -1,0 +1,150 @@
+.add-edit {
+  &-title {
+    padding: 5px 15px;
+    background-color: #4dabf7;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+    > h1 {
+      margin: 0;
+      padding: 0;
+      font-size: 16px;
+      color: white;
+      font-weight: lighter;
+    }
+  }
+
+  &__form {
+    background: white;
+    padding: 15px;
+    border: 1px solid lightgray;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  &__label {
+    font-weight: 500;
+  }
+
+  &__textarea {
+    max-height: 200px;
+    overflow: scroll;
+
+    &::placeholder {
+      font-size: 14px;
+      color: lightgray;
+    }
+  }
+
+  &__input {
+    &::placeholder {
+      font-size: 14px;
+      color: lightgray;
+    }
+  }
+
+  &__body {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+  }
+
+  &__datepicker {
+    .mat-form-field {
+      width: 100%;
+    }
+  }
+
+  &__submit {
+      button {
+        background-color: #4dabf7;
+        border-color: #4dabf7;
+      }
+
+      &-title {
+          place-self: center;
+      }
+  }
+
+  &__back {
+      padding: 15px;
+      background-color: white;
+      a {
+        img {
+          width: 46px;
+          height: 46px;
+        }
+      }
+  }
+
+  &-navbar {
+    display: none;
+    margin: auto;
+    &__list {
+      list-style: none;
+      display: flex;
+      padding: 0;
+      margin: auto;
+    }
+
+    &__item {
+      padding: 0 5px;
+      a {
+        font-size: 12px;
+        text-decoration: none;
+        color: black;
+        img {
+          width: 26px;
+          height: 26px;
+        }
+      }
+    }
+  }
+
+  &-navbar.open {
+    display: flex;
+  }
+
+  .custom-select {
+
+    option:hover {
+      background: red !important;
+    }
+  }
+
+  &__dropdown{
+    &-button{
+      width: 100%;
+      background-color: transparent;
+      border: 1px solid lightgray;
+      color: black;
+      display: flex;
+
+      span {
+        margin-right: auto;
+        // margin-left: 5px;
+      }
+
+      &::after{
+        margin: auto;
+        margin-right: 0;    
+      }
+      &:focus {
+        background-color: transparent;
+        color: black;
+        outline: none;
+        border: 1px solid lightgray;
+        box-shadow: none !important;
+      }
+    }
+
+    ul {
+      width: 100%;
+      max-height: 100px;
+      overflow: scroll;
+
+      li {
+        margin-left: 10px;
+      }
+    }
+  }
+}
