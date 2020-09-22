@@ -1,0 +1,23 @@
+.navbar {
+  background: white;
+  &-logo {
+    a {
+      > img {
+        width: 42px;
+      }
+    }
+    .dropdown {
+      button {
+        place-self: center;
+        background: transparent;
+        color: black;
+        border: none;
+        font-size: 14px;
+      }
+    }
+  }
+
+  &-header {
+    width: 100vh;
+  }
+}

@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   error: "";
   companies: any[];
+  loading: boolean = false;
 
   constructor(private userService: UserService, private router: Router) { }
 
@@ -27,17 +28,17 @@ export class LoginComponent implements OnInit {
   }
 
   OnSubmit(username, password) {
-    this.showloader();
+    this.loading = true;
     this.userService.getCompanies(username, password).subscribe((data) => {
       if (data) {
-        this.hideloader();
+        this.loading =false;
       }
       this.companies = data.body;
       localStorage.setItem('companies', JSON.stringify(this.companies));
     },
       (error) => {
         this.error = error;
-        this.hideloader();
+        this.loading = false;
       })
   }
 
@@ -51,17 +52,6 @@ export class LoginComponent implements OnInit {
 
       this.router.navigate(['/home']);
     })
-  }
-
-
-  hideloader() {
-    document.getElementById('loading')
-      .style.display = 'none';
-  }
-
-  showloader() {
-    document.getElementById('loading')
-      .style.display = 'block';
   }
 
 }

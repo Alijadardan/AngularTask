@@ -1,10 +1,9 @@
 import { listAnimation } from './../../animations';
 import { TasksService } from './../../services/tasks.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, Input, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import PullToRefresh from 'pulltorefreshjs';
 import { trigger, transition, animate, style } from '@angular/animations';
-import { loadavg } from 'os';
 
 @Component({
   selector: 'app-list-activities',
@@ -36,9 +35,9 @@ export class ListActivitiesComponent implements OnInit {
   }
   lastSync = "";
 
-
-
-  constructor(private tasksService: TasksService, private router: Router) { }
+  constructor(private tasksService: TasksService, private router: Router,
+    private viewContainerRef: ViewContainerRef,
+    private cfr: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
     this.currentPageNumber();
@@ -84,6 +83,10 @@ export class ListActivitiesComponent implements OnInit {
       })
   }
 
+  isOnline(){
+
+  }
+
   setDate() {
     let date = new Date;
     localStorage.setItem('logTime', date.toString());
@@ -95,7 +98,6 @@ export class ListActivitiesComponent implements OnInit {
   }
 
   setLocalTasks(data) {
-    this.clearChache();
     localStorage.setItem('tasks' + data.currentPage, JSON.stringify(data));
   }
 
@@ -131,6 +133,7 @@ export class ListActivitiesComponent implements OnInit {
   refreshList() {
     this.isLoading = false;
     this.showPagination = false;
+    this.clearChache();
     this.retriveHttpTasks();
   }
 
@@ -142,18 +145,17 @@ export class ListActivitiesComponent implements OnInit {
     }
   }
 
-
   clearChache() {
     let userToken = localStorage.getItem('userToken');
     let companies = localStorage.getItem('companies');
     let username = localStorage.getItem('username');
-    let selectedCompany = localStorage.getItem('selectedCompany');
+    let selectedCompany = localStorage.getItem('selectedCompanyName');
     let currentPage = localStorage.getItem('currentPage');
     localStorage.clear();
     localStorage.setItem('userToken', userToken);
     localStorage.setItem('companies', companies);
     localStorage.setItem('username', username);
-    localStorage.setItem('selectedCompany', selectedCompany);
+    localStorage.setItem('selectedCompanyName', selectedCompany);
     localStorage.setItem('currentPage', currentPage);
   }
 }

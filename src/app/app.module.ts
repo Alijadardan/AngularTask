@@ -22,6 +22,8 @@ import { TutorialComponent } from './tutorial/tutorial.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { RouterModule } from '@angular/router';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { CommonNavbarComponent } from './components/common-navbar/common-navbar.component';
 
 
 
@@ -34,6 +36,8 @@ import { RouterModule } from '@angular/router';
     SpinnerComponent,
     AddEditActivitiesComponent,
     TutorialComponent,
+    NavbarComponent,
+    CommonNavbarComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

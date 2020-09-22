@@ -1,64 +1,59 @@
 <div class="sync">
-    <div class="container">
-        <div class="sync-card">
-            <div class="sync-header">
-                Last Sync
-            </div>
-            <div @myInsertRemoveTrigger class="sync-body">
-                <span *ngIf="!isLoading">------</span>
-                <span *ngIf="isLoading">{{ lastSync | date:'medium' }}</span>
-            </div>
-        </div>
+  <div class="container">
+    <div class="sync-card">
+      <div class="sync-header">Last Sync</div>
+      <div @myInsertRemoveTrigger class="sync-body">
+        <span *ngIf="!isLoading">------</span>
+        <span *ngIf="isLoading">{{ lastSync | date: "medium" }}</span>
+      </div>
     </div>
+  </div>
 </div>
 <div class="tasks">
-    <div class="container">
-        <div *ngIf="isEmpty" class="alert alert-danger">
-            No Tasks Found
-        </div>
-        <div *ngIf="error" class="alert alert-danger">
-            {{error}}
-        </div>
-        <div class="tasks-body">
-            <div class="tasks-header d-flex">
-                <div class="tasks-header__title">
-                    List of Activities
-                </div>
-                <a (click)="refreshList()" class="tasks-header__reload">
-                    <img src="../../../assets/svg/sync-alt-solid.svg" alt="">
-                </a>
-            </div>
-            <div @myInsertRemoveTrigger *ngIf="!isLoading" class="d-flex justify-content-center">
-                <div id="loading" class="spinner-border my-2" role="status">
-                    <span class="sr-only"></span>
-                </div>
-            </div>
-            <div id="pullTasks">
-                <ul [@listAnimation]="tasks.length"  @myInsertRemoveTrigger *ngIf="isLoading" class="tasks-list mb-4">
-                    <li @myInsertRemoveTrigger class="tasks-item d-flex" *ngFor="let task of tasks | paginate: {
-                    itemsPerPage: params.pageSize,
-                    currentPage: params.pageNumber,
-                    totalItems: params.totalPage }">
-                        <a routerLink="edit/{{task.idTask}}">
-                            <img src="../../../assets/svg/edit.svg" alt="">
-                        </a>
-                        <span class="tasks-item__title ml-2">
-                            {{task.note}}
-                        </span>
-                        <span class="tasks-item__date ml-auto">
-                            {{task.reminderDate | date}}
-                        </span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div @myInsertRemoveTrigger *ngIf="showPagination || isLoading" class="pagination-controls">
-            <pagination-controls directionLinks="true"
-            previousLabel="Prev"
-            nextLabel="Next"
-            maxSize="5"
-            (pageChange)="handlePageChange($event)"
-            (pageBoundsCorrection)="pageChanged($event)"></pagination-controls>
-        </div>
+  <div class="container">
+    <div *ngIf="isEmpty" class="alert alert-danger">No Tasks Found</div>
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
     </div>
+    <div class="tasks-body">
+      <div class="tasks-header d-flex">
+        <div class="tasks-header__title">List of Activities</div>
+        <a (click)="refreshList()" class="tasks-header__reload">
+          <img src="../../../assets/svg/sync-alt-solid.svg" alt="" />
+        </a>
+      </div>
+      <div @myInsertRemoveTrigger *ngIf="!isLoading" class="d-flex justify-content-center">
+        <div class="my-2">
+          <img src="../../../assets/svg/loader.svg" alt="" />
+        </div>
+      </div>
+      <div id="pullTasks">
+        <ul [@listAnimation]="tasks.length" @myInsertRemoveTrigger *ngIf="isLoading" class="tasks-list mb-4">
+          <li @myInsertRemoveTrigger class="tasks-item d-flex" *ngFor="
+              let task of tasks
+                | paginate
+                  : {
+                      itemsPerPage: params.pageSize,
+                      currentPage: params.pageNumber,
+                      totalItems: params.totalPage
+                    }
+            ">
+            <a routerLink="edit/{{ task.idTask }}">
+              <img src="../../../assets/svg/edit.svg" alt="" />
+            </a>
+            <span class="tasks-item__title ml-2">
+              {{ task.note }}
+            </span>
+            <span class="tasks-item__date ml-auto">
+              {{ task.reminderDate | date }}
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div @myInsertRemoveTrigger *ngIf="showPagination || isLoading" class="pagination-controls">
+      <pagination-controls directionLinks="true" previousLabel="Prev" nextLabel="Next" maxSize="5"
+        (pageChange)="handlePageChange($event)" (pageBoundsCorrection)="pageChanged($event)"></pagination-controls>
+    </div>
+  </div>
 </div>

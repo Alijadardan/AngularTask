@@ -46,7 +46,9 @@
                             <div *ngIf="error" class="red-text center error-message">
                                 Incorrect username or password
                             </div>
-                            <app-spinner></app-spinner>
+                            <div *ngIf="loading" class="d-flex justify-content-center">
+                              <img src="../../../assets/svg/loader.svg" alt="" />
+                            </div>
                             <div *ngFor="let company of companies">
                                 <label>
                                     <input data-dismiss="modal" (click)="selectCompany(company.id, company.name)" type="checkbox"

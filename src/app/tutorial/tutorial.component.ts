@@ -1,5 +1,6 @@
 import { TutorialService } from './../services/tutorial.service';
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-tutorial',
@@ -9,10 +10,11 @@ import { Component, OnInit } from '@angular/core';
 export class TutorialComponent implements OnInit {
   info: string;
 
-  constructor(private tutorialService: TutorialService) { }
+  constructor(private tutorialService: TutorialService, private title: Title) { }
 
   ngOnInit(): void {
-    this.tutorialService.getInfo().subscribe((data)=>{
+    this.title.setTitle("Angular Tutorial");
+    this.tutorialService.getInfo().subscribe((data) => {
       console.log(data + "data");
       this.info = data
     });
