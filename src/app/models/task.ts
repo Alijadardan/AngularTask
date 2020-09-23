@@ -1,13 +1,13 @@
 export default interface Task {
-    idAnagrafica: 0,
+    idAnagrafica: number,
     startDate: string,
     endDate: string,
     reminderDate: string,
     subject: string,
     priority: 0,
-    idTaskType: 0,
+    idTaskType: number,
     taskColor: string,
-    idTaskStatus: 0,
+    idTaskStatus: number,
     note: string,
     idTaskGest: 0,
     idTaskFrom: 0

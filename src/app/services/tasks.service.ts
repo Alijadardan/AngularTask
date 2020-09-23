@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import Task from '../models/task';
-
+import { BehaviorSubject } from 'rxjs';
+import Anagrafiche from'../models/Anagrafiche';
+import TaskType from '../models/taskType';
+import TaskStatus from '../models/taskStatus';
 @Injectable({
   providedIn: 'root'
 })
 export class TasksService {
+  private messageSource = new BehaviorSubject('default message');
+  currentMessage = this.messageSource.asObservable();
   baseUrl = "https://movitask-webapi-qc.azurewebsites.net/api/Task";
+  Url = "https://movitask-webapi-qc.azurewebsites.net/api";
 
   constructor(private http: HttpClient) { }
 
@@ -26,17 +32,38 @@ export class TasksService {
     })});
   }
 
+  getAnagrafiche(){
+    return this.http.get<Anagrafiche>(this.Url+'/Anagrafiche/GetAll', {headers: new HttpHeaders({
+      'accept': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+    })});
+  }
+
+  getTaskType(){
+    return this.http.get<TaskType>(this.Url+'/TaskType/GetAll', {headers: new HttpHeaders({
+      'accept': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+    })});
+  }
+
+  getTaskStatus(){
+    return this.http.get<TaskStatus>(this.Url+'/TaskStatus/GetAll', {headers: new HttpHeaders({
+      'accept': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+    })});
+  }
+
   createTask(data: Task) {
     return this.http.post(this.baseUrl+"/Add", {
-      "idAnagrafica": 0,
+      "idAnagrafica": data.idAnagrafica,
       "startDate": data.startDate,
       "endDate": data.endDate,
       "reminderDate": data.endDate,
       "subject": data.subject,
-      "priority": 0,
-      "idTaskType": 0,
+      "priority": 1,
+      "idTaskType": data.idTaskType,
       "taskColor": data.taskColor,
-      "idTaskStatus": 0,
+      "idTaskStatus": data.idTaskStatus,
       "note": data.note,
       "idTaskGest": 0,
       "idTaskFrom": 0
@@ -47,28 +74,31 @@ export class TasksService {
   }
 
   updateTask(id, params) {
+    let y: number = +id;
+    let userId: number = +localStorage.getItem('userid');
     return this.http.put(this.baseUrl+"/Update", {
-      "idTask": id,
-      "idAnagrafica": 0,
-      "startDate": params.starDate,
+      "idTask": y,
+      "idAnagrafica": params.idAnagrafica,
+      "startDate": params.startDate,
       "endDate": params.endDate,
       "reminderDate": params.endDate,
       "subject": params.subject,
-      "priority": 0,
-      "idTaskType": 0,
+      "priority": 1,
+      "idTaskType": params.idTaskType,
       "taskColor": params.color,
-      "idTaskStatus": 0,
+      "idTaskStatus": params.idTaskStatus,
       "note": params.note,
       "idTaskGest": 0,
       "idTaskFrom": 0,
-      "idUser": 0,
+      "idUser": userId,
       "canBeDeleted": true,
-      "timeIns": "2020-09-15T15:19:15.832Z",
-      "timeMod": "2020-09-15T15:19:15.832Z"
+      "timeIns": params.startDate,
+      "timeMod": new Date
     } , {headers: new HttpHeaders({
       'accept': 'application/json',
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${localStorage.getItem('userToken')}`
     })});
   }
-   
+
 }

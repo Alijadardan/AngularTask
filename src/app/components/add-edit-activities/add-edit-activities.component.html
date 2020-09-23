@@ -66,9 +66,23 @@
                     </mat-form-field>
                 </div>
                 <div class="form-group">
+                    <label class="add-edit__label" for="note">Anagrafiche</label>
+                    <select class="custom-select" formControlName="idAnagrafica">
+                    <option *ngFor="let anagrafiche of anagrafiches" [ngValue]="anagrafiche.id">{{ anagrafiche.code }}<div></div></option>
+                    <div></div>
+                    </select>
+                </div>
+                <div class="form-group">
+                  <label class="add-edit__label" for="note">TaskType</label>
+                  <select class="custom-select" formControlName="idTaskType">
+                  <option *ngFor="let idTaskType of idTaskTypes" [ngValue]="idTaskType.id">{{ idTaskType.code }}<div></div></option>
+                  <div></div>
+                  </select>
+              </div>
+                <div class="form-group">
                     <label class="add-edit__label" for="note">Color picker</label>
                     <select class="custom-select" formControlName="color">
-                    <option *ngFor="let color of colors" [ngValue]="color">{{color}} <div></div></option>
+                    <option *ngFor="let color of colors" [ngValue]="color">{{color}}<div></div></option>
                     <div></div>
                     </select>
                 </div>

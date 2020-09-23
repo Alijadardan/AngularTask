@@ -13,8 +13,13 @@ export class TutorialService {
   getInfo() {
     return this.http.get<any>(this.baseUrl + "/GetTutorial", {
         headers: new HttpHeaders({
-                  'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
-                  'responseType': 'blob',})
+                  'Content-Type': 'text/plain; charset=utf-8',
+                  'Content-Encoding': 'gzip',
+                  'Vary': 'Accept-Encoding',
+                  'Server': 'Microsoft-IIS/10.0',
+                  'X-Powered-By': 'ASP.NET',
+                  'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+                  'responseType': 'text',})
     });
   }
 }

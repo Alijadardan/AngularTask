@@ -4,6 +4,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first, endWith } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import Anagrafiche from 'src/app/models/Anagrafiche';
+import TaskType from 'src/app/models/taskType';
+import TaskStatus from 'src/app/models/taskStatus';
 
 
 @Component({
@@ -13,12 +16,15 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class AddEditActivitiesComponent implements OnInit {
 
+  colors: any = ['#228BE6', '#8B8B8B', '#12b886', '#ffffff'];
+  anagrafiches: Anagrafiche;
+  idTaskTypes: TaskType;
+  taskStatus: TaskStatus;
   form: FormGroup;
   id: string;
   isAddMode: boolean;
   loading = false;
   submitted = false;
-  colors: any = ['#228BE6', '#8B8B8B', '#12b886', '#ffffff'];
   error: "";
   classApplied = false;
 
@@ -35,14 +41,34 @@ export class AddEditActivitiesComponent implements OnInit {
       subject: ['', Validators.required],
       startDate: [''],
       endDate: [''],
+      idAnagrafica: [1, Validators.required],
+      idTaskType: [7, Validators.required],
+      idTaskStatus: [1, Validators.required],
       color: ['#228BE6', Validators.required],
       note: ['', Validators.required]
     });
 
+    this.getAnagrafiche();
+    this.getTaskType();
+    this.getTaskStatus();
+
     if (!this.isAddMode) {
       this.tasksService.getTaskById(this.id)
         .pipe(first())
-        .subscribe((x) => { this.form.patchValue(x); this.loading = false });
+        .subscribe((x) => {
+          console.log(x);
+          this.form.patchValue({
+            subject: x.subject,
+            startDate: x.startDate,
+            endDate: x.endDate,
+            idAnagrafica: x.anagrafiche.id,
+            idTaskType: x.taskType.id,
+            idTaskStatus: x.taskStatus.id,
+            color: x.taskColor,
+            note: x.note
+          });
+          this.loading = false;
+        });
 
         this.loading = true;
     }
@@ -71,6 +97,7 @@ export class AddEditActivitiesComponent implements OnInit {
     this.tasksService.createTask(this.form.value).pipe(first())
       .subscribe({
         next: () => {
+          alert("Task was Added");
           this.router.navigate(['/'], { relativeTo: this.route });
         },
         error: error => {
@@ -85,6 +112,7 @@ export class AddEditActivitiesComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: () => {
+          alert("Task was Updated");
           this.router.navigate(['/'], { relativeTo: this.route });
         },
         error: error => {
@@ -92,6 +120,42 @@ export class AddEditActivitiesComponent implements OnInit {
           this.loading = false;
         }
       });
+  }
+
+  getAnagrafiche(){
+    let anagrafiche = JSON.parse(localStorage.getItem('anagrafiche'));
+    if(anagrafiche){
+      this.anagrafiches = anagrafiche;
+    }else{
+      this.tasksService.getAnagrafiche().subscribe((data)=>{
+        this.anagrafiches = data;
+        localStorage.setItem('anagrafiche', JSON.stringify(data));
+      });
+    }
+  }
+
+  getTaskType(){
+    let taskType = JSON.parse(localStorage.getItem('taskType'));
+    if(taskType){
+      this.idTaskTypes = taskType;
+    }else{
+      this.tasksService.getTaskType().subscribe((data)=>{
+        this.idTaskTypes = data;
+        localStorage.setItem('taskType', JSON.stringify(data));
+      })
+    }
+  }
+
+  getTaskStatus(){
+    let taskStatus = JSON.parse(localStorage.getItem('taskStatus'));
+    if(taskStatus){
+      this.taskStatus = taskStatus;
+    }else{
+      this.tasksService.getTaskStatus().subscribe((data)=>{
+        this.taskStatus = data;
+        localStorage.setItem('taskStatus', JSON.stringify(data));
+      })
+    }
   }
 
   toggleClass(){

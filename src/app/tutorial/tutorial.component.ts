@@ -15,7 +15,7 @@ export class TutorialComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle("Angular Tutorial");
     this.tutorialService.getInfo().subscribe((data) => {
-      console.log(data + "data");
+      console.log(data);
       this.info = data
     });
 
