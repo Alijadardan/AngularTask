@@ -48,9 +48,7 @@ export class AddEditActivitiesComponent implements OnInit {
       note: ['', Validators.required]
     });
 
-    this.getAnagrafiche();
-    this.getTaskType();
-    this.getTaskStatus();
+    this.GetTaskInfo();
 
     if (!this.isAddMode) {
       this.tasksService.getTaskById(this.id)
@@ -122,39 +120,22 @@ export class AddEditActivitiesComponent implements OnInit {
       });
   }
 
-  getAnagrafiche(){
+
+  GetTaskInfo(){
+    let taskStatus = JSON.parse(localStorage.getItem('taskStatus'));
+    let taskType = JSON.parse(localStorage.getItem('taskType'));
     let anagrafiche = JSON.parse(localStorage.getItem('anagrafiche'));
-    if(anagrafiche){
+    if(taskStatus && taskType && anagrafiche ){
+      this.taskStatus = taskStatus;
+      this.idTaskTypes = taskType;
       this.anagrafiches = anagrafiche;
     }else{
-      this.tasksService.getAnagrafiche().subscribe((data)=>{
-        this.anagrafiches = data;
-        localStorage.setItem('anagrafiche', JSON.stringify(data));
+      this.tasksService.getTaskInfo().subscribe((data)=> {
+        console.log(data);
+        localStorage.setItem('taskStatus',JSON.stringify(data.status));
+        localStorage.setItem('taskType', JSON.stringify(data.type));
+        localStorage.setItem('anagrafiche', JSON.stringify(data.anagrafiche));
       });
-    }
-  }
-
-  getTaskType(){
-    let taskType = JSON.parse(localStorage.getItem('taskType'));
-    if(taskType){
-      this.idTaskTypes = taskType;
-    }else{
-      this.tasksService.getTaskType().subscribe((data)=>{
-        this.idTaskTypes = data;
-        localStorage.setItem('taskType', JSON.stringify(data));
-      })
-    }
-  }
-
-  getTaskStatus(){
-    let taskStatus = JSON.parse(localStorage.getItem('taskStatus'));
-    if(taskStatus){
-      this.taskStatus = taskStatus;
-    }else{
-      this.tasksService.getTaskStatus().subscribe((data)=>{
-        this.taskStatus = data;
-        localStorage.setItem('taskStatus', JSON.stringify(data));
-      })
     }
   }
 

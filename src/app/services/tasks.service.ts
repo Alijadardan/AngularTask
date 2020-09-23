@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import Task from '../models/task';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, forkJoin } from 'rxjs';
 import Anagrafiche from'../models/Anagrafiche';
 import TaskType from '../models/taskType';
 import TaskStatus from '../models/taskStatus';
@@ -51,6 +51,25 @@ export class TasksService {
       'accept': 'application/json',
       'Authorization': `Bearer ${localStorage.getItem('userToken')}`
     })});
+  }
+
+  getTaskInfo(){
+    return forkJoin(
+      {
+        anagrafiche: this.http.get<Anagrafiche>(this.Url+'/Anagrafiche/GetAll', {headers: new HttpHeaders({
+          'accept': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+        })}),
+        type: this.http.get<TaskType>(this.Url+'/TaskType/GetAll', {headers: new HttpHeaders({
+          'accept': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+        })}),
+        status: this.http.get<TaskStatus>(this.Url+'/TaskStatus/GetAll', {headers: new HttpHeaders({
+          'accept': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+        })})
+      }
+    )
   }
 
   createTask(data: Task) {
