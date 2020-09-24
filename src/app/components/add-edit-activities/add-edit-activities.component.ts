@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import Anagrafiche from 'src/app/models/Anagrafiche';
 import TaskType from 'src/app/models/taskType';
 import TaskStatus from 'src/app/models/taskStatus';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -27,13 +28,17 @@ export class AddEditActivitiesComponent implements OnInit {
   submitted = false;
   error: "";
   classApplied = false;
+  isDirty = false;
+
 
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private tasksService: TasksService,) { }
 
+
   ngOnInit(): void {
+
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
 
@@ -70,6 +75,8 @@ export class AddEditActivitiesComponent implements OnInit {
 
         this.loading = true;
     }
+
+    this.form.valueChanges.subscribe( e => this.isDirty = true );
   }
 
   get f() { return this.form.controls; }
@@ -95,7 +102,11 @@ export class AddEditActivitiesComponent implements OnInit {
     this.tasksService.createTask(this.form.value).pipe(first())
       .subscribe({
         next: () => {
-          alert("Task was Added");
+          this.isDirty = false;
+          Swal.fire({
+            text: 'Task was Added',
+            icon: 'success'
+          });
           this.router.navigate(['/'], { relativeTo: this.route });
         },
         error: error => {
@@ -110,7 +121,11 @@ export class AddEditActivitiesComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: () => {
-          alert("Task was Updated");
+          this.isDirty = false;
+          Swal.fire({
+            text: 'Task was Updated',
+            icon: 'success'
+          });
           this.router.navigate(['/'], { relativeTo: this.route });
         },
         error: error => {
@@ -141,6 +156,10 @@ export class AddEditActivitiesComponent implements OnInit {
 
   toggleClass(){
     this.classApplied = !this.classApplied;
+  }
+
+  canDeactivate() {
+    return this.isDirty;
   }
 
 }

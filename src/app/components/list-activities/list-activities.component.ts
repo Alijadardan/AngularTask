@@ -4,6 +4,9 @@ import { Component, ComponentFactoryResolver, Input, OnInit, ViewContainerRef } 
 import { Router } from '@angular/router';
 import PullToRefresh from 'pulltorefreshjs';
 import { trigger, transition, animate, style } from '@angular/animations';
+import Task from 'src/app/models/task';
+import Swal from 'sweetalert2';
+declare var $:any;
 
 @Component({
   selector: 'app-list-activities',
@@ -23,7 +26,7 @@ import { trigger, transition, animate, style } from '@angular/animations';
   styleUrls: ['./list-activities.component.scss']
 })
 export class ListActivitiesComponent implements OnInit {
-  tasks: any[];
+  tasks: Task[];
   isEmpty: boolean = false;
   isLoading: boolean = false;
   showPagination: boolean = false;
@@ -69,6 +72,7 @@ export class ListActivitiesComponent implements OnInit {
     this.tasksService.getTasks(this.params).subscribe((data) => {
       this.setDate();
       if (data) {
+        console.log(data)
         this.tasks = data.data;
         this.setLocalTasks(data);
         this.isLoading = true;
@@ -81,10 +85,6 @@ export class ListActivitiesComponent implements OnInit {
         this.error = error;
         this.isLoading = true;
       })
-  }
-
-  isOnline(){
-
   }
 
   setDate() {
@@ -157,5 +157,39 @@ export class ListActivitiesComponent implements OnInit {
     localStorage.setItem('username', username);
     localStorage.setItem('selectedCompanyName', selectedCompany);
     localStorage.setItem('currentPage', currentPage);
+  }
+
+  deleteTask(id, canbedeleted){
+    if(!canbedeleted){
+      Swal.fire({
+        text: 'This Task can not be deleted',
+        icon: 'error'
+      });
+    }else{
+      this.isLoading = false;
+      this.showPagination = false;
+      this.tasksService.deleteTask(id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.showPagination = true;
+          Swal.fire({
+            text: 'Task Deleted Successfully',
+            icon: 'success'
+          });
+          this.clearChache();
+          this.retriveHttpTasks();
+        },
+        error: error => {
+          this.isLoading = true;
+          this.showPagination = false;
+          // this.error = error;
+          Swal.fire({
+            text: 'Something went Wrong',
+            icon: 'error'
+          });
+        }
+      });
+    }
+
   }
 }

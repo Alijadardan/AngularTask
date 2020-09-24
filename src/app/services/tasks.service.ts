@@ -32,6 +32,12 @@ export class TasksService {
     })});
   }
 
+  deleteTask(id){
+    return this.http.delete<Task>(this.baseUrl+'/Delete/'+id, {headers: new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+    })});
+  }
+
   getAnagrafiche(){
     return this.http.get<Anagrafiche>(this.Url+'/Anagrafiche/GetAll', {headers: new HttpHeaders({
       'accept': 'application/json',
