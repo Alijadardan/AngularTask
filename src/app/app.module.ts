@@ -24,6 +24,7 @@ import { environment } from '../environments/environment';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { CommonNavbarComponent } from './components/common-navbar/common-navbar.component';
+import { ImageFormComponent } from './components/image-form/image-form.component';
 
 
 
@@ -38,6 +39,7 @@ import { CommonNavbarComponent } from './components/common-navbar/common-navbar.
     TutorialComponent,
     NavbarComponent,
     CommonNavbarComponent,
+    ImageFormComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
