@@ -11,42 +11,43 @@
       <div class="modal-body">
         <div id="imgForm" *ngIf="!isAddMode" class="add-edit imgForm">
           <div class="add-edit__body">
-              <form class="img__form">
-                <div class="form-group img__form-group">
-                  <fieldset class="form-group">
-                    {{ imageError }}
-                    <div class="custom-file fileInputProfileWrap">
-                      <input type="file" (change)="fileChangeEvent($event)" class="fileInputProfile" />
-                      <div class="img-space row m-auto">
-                        <ng-container *ngIf="isImageSaved; else elseTemplate">
-                          <img [src]="cardImageBase64" />
-                        </ng-container>
-                        <ng-template #elseTemplate>
-                          <div class="col-6 mb-2 d-flex" *ngFor="let file of files">
-                            <img [src]="file.allegato" class="img-responsive" />
-                            <a class="img-responsive__delete" (click)="deleteImage(file.id)">
-                              <img src="../../../assets/svg/times-circle-solid.svg" />
-                            </a>
+            <form class="img__form">
+              <div class="form-group img__form-group">
+                <fieldset class="form-group">
+                  {{ imageError }}
+                  <div class="custom-file fileInputProfileWrap">
+                    <input type="file" (change)="fileChangeEvent($event)" class="fileInputProfile" />
+                    <div class="img-space row m-auto">
+                      <ng-container *ngIf="isImageSaved; else elseTemplate">
+                        <img [src]="cardImageBase64" />
+                      </ng-container>
+                      <ng-template #elseTemplate>
+                        <div class="col-6 mb-2 d-flex" *ngFor="let file of files">
+                          <img [src]="file.allegato" class="img-responsive" />
+                          <a class="img-responsive__delete" (click)="deleteImage(file.id)">
+                            <img src="../../../assets/svg/times-circle-solid.svg" />
+                          </a>
+                        </div>
+                        <div *ngIf="loading || !files" class="d-flex justify-content-center m-auto">
+                          <div class="my-2">
+                            <img src="../../../assets/svg/loader.svg" alt="" />
                           </div>
-                          <div *ngIf="loading || !files" class="d-flex justify-content-center m-auto">
-                            <div class="my-2">
-                              <img src="../../../assets/svg/loader.svg" alt="" />
-                            </div>
-                          </div>
-                        </ng-template>
-                      </div>
+                        </div>
+                      </ng-template>
                     </div>
-                  </fieldset>
-                  <a class="img__form-remove" (click)="removeImage()" *ngIf="isImageSaved">
-                    <img src="../../../assets/svg/times-circle-solid.svg" />
-                  </a>
-                </div>
-                <div *ngIf="isImageSaved && !isAddMode" class="pb-2">
-                  <a data-dismiss="modal" aria-label="Close" class="btn btn-success img__form-update" (click)="AddImage()">
-                    Add Image
-                  </a>
-                </div>
-              </form>
+                  </div>
+                </fieldset>
+                <a class="img__form-remove" (click)="removeImage()" *ngIf="isImageSaved">
+                  <img src="../../../assets/svg/times-circle-solid.svg" />
+                </a>
+              </div>
+              <div *ngIf="isImageSaved && !isAddMode" class="pb-2">
+                <a data-dismiss="modal" aria-label="Close" class="btn btn-success img__form-update"
+                  (click)="addImage()">
+                  Add Image
+                </a>
+              </div>
+            </form>
           </div>
         </div>
       </div>

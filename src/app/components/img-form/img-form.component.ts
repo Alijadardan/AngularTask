@@ -120,9 +120,9 @@ export class ImgFormComponent implements OnInit {
     this.isImageSaved = false;
   }
 
-  addImage(id) {
-    let y: number = +id;
-    this.imgService.addImage(y, this.cardImageBase64).subscribe({
+  addImage() {
+    let id: number = +this.id;
+    this.imgService.addImage(id, this.cardImageBase64).subscribe({
       next: () => {
         Swal.fire({
           text: 'Img was Added',
@@ -138,18 +138,10 @@ export class ImgFormComponent implements OnInit {
       },
       error: error => {
         Swal.fire({
-          text: 'Img was not Added',
+          text: 'Img was not Added : ' + error,
           icon: 'error'
         });
-        // this.error = error;
       }
     })
   }
-
-  AddImage() {
-    if (!this.isAddMode) {
-      this.addImage(this.id);
-    }
-  }
-
 }

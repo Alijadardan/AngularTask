@@ -35,10 +35,6 @@ export class ListActivitiesComponent implements OnInit {
     this.retriveTasks();
   }
 
-  test(){
-    console.log("test");
-  }
-
   retriveTasks() {
     if (localStorage.getItem('tasks' + this.params.pageNumber)) {
       this.retriveLocalTasks();
@@ -146,44 +142,49 @@ export class ListActivitiesComponent implements OnInit {
     localStorage.setItem('currentPage', currentPage);
   }
 
-  deleteTask(id, canbedeleted){
-    if(!canbedeleted){
+
+  canBeDeleted(id, canbedeleted){
+    if (!canbedeleted) {
       Swal.fire({
         text: 'This Task can not be deleted',
         icon: 'error'
       });
-    }else{
-      let placeholder;
-      Swal.fire({
-        title: 'Are you sure you want to delete this item!',
-        showCancelButton: true,
-        confirmButtonText: `Delete`,
-        cancelButtonText: `Cancel`,
-        icon: 'question',
-        confirmButtonColor: '#FF0000',
-      }).then((result) => {
-        if(result.isConfirmed){
-          this.tasks = this.tasks.filter(function(obj){
-            if(obj.idTask == id){
-              placeholder = obj;
-            }
-            return obj.idTask !== id;
-          });
-
-          this.tasksService.deleteTask(id).subscribe({
-            next: () => {
-              console.log("Deleted");
-            },
-            error: error => {
-              this.tasks.push(placeholder);
-              Swal.fire({
-                text: 'Something went Wrong',
-                icon: 'error'
-              });
-            }
-          });
-        }
-      })
+    } else {
+      this.confirmDelete(id);
     }
+  }
+
+  confirmDelete(id){
+    Swal.fire({
+      title: 'Are you sure you want to delete this item!',
+      showCancelButton: true,
+      confirmButtonText: `Delete`,
+      cancelButtonText: `Cancel`,
+      icon: 'question',
+      confirmButtonColor: '#FF0000',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteTask(id);
+      }
+    })
+  }
+
+  deleteTask(id) {
+    let placeholder;
+    this.tasks = this.tasks.filter(function (obj) {
+      if (obj.idTask == id) {
+        placeholder = obj;
+      }
+      return obj.idTask !== id;
+    });
+    this.tasksService.deleteTask(id).subscribe({
+      error: error => {
+        this.tasks.push(placeholder);
+        Swal.fire({
+          text: 'Something went Wrong :' + error,
+          icon: 'error'
+        });
+      }
+    });
   }
 }

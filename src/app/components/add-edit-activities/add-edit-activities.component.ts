@@ -42,50 +42,19 @@ export class AddEditActivitiesComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
-
-    this.form = this.formBuilder.group({
-      subject: ['', Validators.required],
-      startDate: [''],
-      endDate: [''],
-      idAnagrafica: [1, Validators.required],
-      idTaskType: [7, Validators.required],
-      idTaskStatus: [1, Validators.required],
-      color: ['#228BE6', Validators.required],
-      note: ['', Validators.required],
-    });
-
+    this.buildForm();
     this.GetTaskInfo();
 
     if (!this.isAddMode) {
-      this.tasksService.getTaskById(this.id)
-        .pipe(first())
-        .subscribe((x) => {
-          this.form.patchValue({
-            subject: x.subject,
-            startDate: x.startDate,
-            endDate: x.endDate,
-            idAnagrafica: x.anagrafiche.id,
-            idTaskType: x.taskType.id,
-            idTaskStatus: x.taskStatus.id,
-            color: x.taskColor,
-            note: x.note
-          });
-          this.loading = false;
-          this.isDirty = false;
-        });
-
+      this.patchValues();
       this.loading = true;
     }
-
     this.form.valueChanges.subscribe(e => this.isDirty = true);
   }
-
-  get f() { return this.form.controls; }
 
   onSubmit() {
     this.submitted = true;
 
-    // stop here if form is invalid
     if (this.form.invalid) {
       return;
     }
@@ -110,7 +79,10 @@ export class AddEditActivitiesComponent implements OnInit {
           this.router.navigate(['/'], { relativeTo: this.route });
         },
         error: error => {
-          this.error = error;
+          Swal.fire({
+            text: 'Somthing went wrong :' + error,
+            icon: 'error'
+          });
           this.loading = false;
         }
       })
@@ -129,7 +101,10 @@ export class AddEditActivitiesComponent implements OnInit {
           this.router.navigate(['/'], { relativeTo: this.route });
         },
         error: error => {
-          this.error = error;
+          Swal.fire({
+            text: 'Somthing went wrong :' + error,
+            icon: 'error'
+          });
           this.loading = false;
         }
       });
@@ -153,12 +128,44 @@ export class AddEditActivitiesComponent implements OnInit {
         },
         error: error => {
           Swal.fire({
-            text: 'Somthing went wrong',
+            text: 'Somthing went wrong :' + error,
             icon: 'error'
           });
         }
       });
     }
+  }
+
+  buildForm() {
+    this.form = this.formBuilder.group({
+      subject: ['', Validators.required],
+      startDate: [''],
+      endDate: [''],
+      idAnagrafica: [1, Validators.required],
+      idTaskType: [7, Validators.required],
+      idTaskStatus: [1, Validators.required],
+      color: ['#228BE6', Validators.required],
+      note: ['', Validators.required],
+    });
+  }
+
+  patchValues() {
+    this.tasksService.getTaskById(this.id)
+      .pipe(first())
+      .subscribe((x) => {
+        this.form.patchValue({
+          subject: x.subject,
+          startDate: x.startDate,
+          endDate: x.endDate,
+          idAnagrafica: x.anagrafiche.id,
+          idTaskType: x.taskType.id,
+          idTaskStatus: x.taskStatus.id,
+          color: x.taskColor,
+          note: x.note
+        });
+        this.loading = false;
+        this.isDirty = false;
+      });
   }
 
   toggleClass() {
@@ -172,4 +179,7 @@ export class AddEditActivitiesComponent implements OnInit {
   childEventClicked() {
     this.imgForm.showImages();
   }
+
+  get f() { return this.form.controls; }
+
 }

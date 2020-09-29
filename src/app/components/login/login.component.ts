@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.userService.getCompanies(username, password).subscribe((data) => {
       if (data) {
-        this.loading =false;
+        this.loading = false;
       }
       this.companies = data.body;
       localStorage.setItem('companies', JSON.stringify(this.companies));

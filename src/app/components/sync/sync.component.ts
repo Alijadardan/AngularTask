@@ -9,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class SyncComponent implements OnInit {
 
-  @Input() isLoading:boolean;
+  @Input() isLoading: boolean;
   @Input() lastSync;
 
   constructor() { }

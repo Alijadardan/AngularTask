@@ -29,7 +29,7 @@
             <a routerLink="edit/{{ task.idTask }}">
               <img src="../../../assets/svg/edit.svg" alt="" />
             </a>
-            <a class="ml-2" (click)="deleteTask(task.idTask, task.canBeDeleted)">
+            <a class="ml-2" (click)="canBeDeleted(task.idTask, task.canBeDeleted)">
               <img *ngIf="task.canBeDeleted" src="../../../assets/svg/trash-solid.svg" alt="" />
               <img *ngIf="!task.canBeDeleted" src="../../../assets/svg/trash-solid-disable.svg" alt="" />
             </a>
