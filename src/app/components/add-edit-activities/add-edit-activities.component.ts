@@ -1,16 +1,14 @@
-import { ImageUploadService } from './../../services/image-upload.service';
+import { ImgFormComponent } from './../img-form/img-form.component';
 import { TasksService } from './../../services/tasks.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { first, endWith } from 'rxjs/operators';
-import { HttpErrorResponse } from '@angular/common/http';
+import { first } from 'rxjs/operators';
 import Anagrafiche from 'src/app/models/Anagrafiche';
 import TaskType from 'src/app/models/taskType';
 import TaskStatus from 'src/app/models/taskStatus';
 import Swal from 'sweetalert2';
 import * as _ from 'lodash';
-
 
 @Component({
   selector: 'app-add-edit-activities',
@@ -31,18 +29,14 @@ export class AddEditActivitiesComponent implements OnInit {
   error: "";
   classApplied = false;
   isDirty = false;
-  showForm = false;
-  imageError: string;
-  isImageSaved: boolean;
-  cardImageBase64: string;
-  files;
+
+  @ViewChild(ImgFormComponent) imgForm: ImgFormComponent;
 
 
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private tasksService: TasksService,
-    private imgService: ImageUploadService) { }
+    private tasksService: TasksService,) { }
 
 
   ngOnInit(): void {
@@ -151,10 +145,18 @@ export class AddEditActivitiesComponent implements OnInit {
       this.idTaskTypes = taskType;
       this.anagrafiches = anagrafiche;
     } else {
-      this.tasksService.getTaskInfo().subscribe((data) => {
-        localStorage.setItem('taskStatus', JSON.stringify(data.status));
-        localStorage.setItem('taskType', JSON.stringify(data.type));
-        localStorage.setItem('anagrafiche', JSON.stringify(data.anagrafiche));
+      this.tasksService.getTaskInfo().subscribe({
+        next: (data) => {
+          localStorage.setItem('taskStatus', JSON.stringify(data.status));
+          localStorage.setItem('taskType', JSON.stringify(data.type));
+          localStorage.setItem('anagrafiche', JSON.stringify(data.anagrafiche));
+        },
+        error: error => {
+          Swal.fire({
+            text: 'Somthing went wrong',
+            icon: 'error'
+          });
+        }
       });
     }
   }
@@ -167,149 +169,7 @@ export class AddEditActivitiesComponent implements OnInit {
     return this.isDirty;
   }
 
-  fileChangeEvent(fileInput: any) {
-    this.imageError = null;
-    if (fileInput.target.files && fileInput.target.files[0]) {
-      // Size Filter Bytes
-      const max_size = 20971520;
-      const allowed_types = ['image/png', 'image/jpeg'];
-      const max_height = 15200;
-      const max_width = 25600;
-
-      if (fileInput.target.files[0].size > max_size) {
-        this.imageError =
-          'Maximum size allowed is ' + max_size / 1000 + 'Mb';
-
-        return false;
-      }
-
-      if (!_.includes(allowed_types, fileInput.target.files[0].type)) {
-        this.imageError = 'Only Images are allowed ( JPG | PNG )';
-        return false;
-      }
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const image = new Image();
-        image.src = e.target.result;
-        image.onload = rs => {
-          const img_height = rs.currentTarget['height'];
-          const img_width = rs.currentTarget['width'];
-
-          if (img_height > max_height && img_width > max_width) {
-            this.imageError =
-              'Maximum dimentions allowed ' +
-              max_height +
-              '*' +
-              max_width +
-              'px';
-            return false;
-          } else {
-            const imgBase64Path = e.target.result;
-            this.cardImageBase64 = imgBase64Path;
-            this.isImageSaved = true;
-            // this.previewImagePath = imgBase64Path;
-          }
-        };
-      };
-
-      reader.readAsDataURL(fileInput.target.files[0]);
-    }
-  }
-
-  removeImage() {
-    this.cardImageBase64 = null;
-    this.isImageSaved = false;
-  }
-
-  addImage(id) {
-    let y: number = +id;
-    this.loading = true;
-    this.imgService.addImage(y, this.cardImageBase64).subscribe({
-      next: () => {
-        Swal.fire({
-          text: 'Img was Added',
-          icon: 'success'
-        });
-        this.files.unshift({
-          id: null,
-          taskId: null,
-          oggetto: "",
-          allegato: this.cardImageBase64
-        });
-        this.loading = false;
-      },
-      error: error => {
-        Swal.fire({
-          text: 'Img was not Added',
-          icon: 'error'
-        });
-        this.loading = false;
-        // this.error = error;
-      }
-    })
-  }
-
-  AddImage() {
-    if (!this.isAddMode) {
-      this.addImage(this.id);
-      const element: HTMLElement = document.getElementById('imgForm');
-      element.style.display = 'none';
-      this, this.showForm = false;
-    }
-  }
-
-  showImgForm() {
-    this.showImages();
-    const element: HTMLElement = document.getElementById('imgForm');
-    if (!this.showForm) {
-      element.style.display = 'block';
-      this.showForm = true;
-    } else {
-      element.style.display = 'none';
-      this.showForm = false;
-    }
-  }
-
-  showImages() {
-    this.imgService.getImageById(this.id).subscribe(
-      {
-        next: (data) => {
-          this.files = data;
-          this.loading = false;
-        },
-        error: error => {
-          Swal.fire({
-            text: 'No Image Found',
-            icon: 'warning'
-          });
-          this.loading = false;
-          this.files = [];
-        }
-      });
-  }
-
-  deleteImage(id) {
-    let placeholder = this.files;
-    this.files = undefined;
-    this.loading = true;
-    this.imgService.deleteImage(id).subscribe({
-      next: () => {
-        Swal.fire({
-          text: 'Img was Deleted',
-          icon: 'success'
-        });
-        this.files = placeholder;
-        this.files.splice(this.files.filter(el => el.id == id), 1);
-        this.showImages();
-        this.loading = false;
-      },
-      error: error => {
-        Swal.fire({
-          text: 'Img was not Deleted',
-          icon: 'error'
-        });
-        this.loading = false;
-      }
-    });
+  childEventClicked() {
+    this.imgForm.showImages();
   }
 }

@@ -1,0 +1,40 @@
+<div class="back-menu d-flex">
+  <a (click)="toggleClass()">
+    <img *ngIf="classApplied" src="../../../assets/img/x.PNG" alt="" />
+    <img *ngIf="!classApplied" src="../../../assets/img/right.PNG" alt="" />
+  </a>
+  <div class="back-navbar" [class.open]="classApplied">
+    <ul class="back-navbar__list">
+      <li class="back-navbar__item">
+        <a routerLink="/">
+          <img class="d-block m-auto" src="../../../assets/img/x-red.PNG" alt="" />
+          Anulla
+        </a>
+      </li>
+      <li class="back-navbar__item">
+        <a href="#">
+          <img class="d-block m-auto" src="../../../assets/img/link.PNG" alt="" />
+          Evasione
+        </a>
+      </li>
+      <li *ngIf="!isAddMode" class="back-navbar__item">
+        <a (click)="showForm()" data-toggle="modal" data-target="#exampleModalCenter">
+          <img class="d-block m-auto" src="../../../assets/img/att.PNG" alt="" />
+          Allegati
+        </a>
+      </li>
+      <li class="back-navbar__item">
+        <a href="#">
+          <img class="d-block m-auto" src="../../../assets/img/inp.PNG" alt="" />
+          Assegna A
+        </a>
+      </li>
+      <li class="back-navbar__item">
+        <a href="#">
+          <img class="d-block m-auto" src="../../../assets/img/save.PNG" alt="" />
+          Save
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

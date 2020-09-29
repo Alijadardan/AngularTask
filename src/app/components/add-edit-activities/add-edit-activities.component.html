@@ -1,174 +1,88 @@
-<div class="add-edit__back d-flex">
-    <a (click)="toggleClass()">
-        <img *ngIf="classApplied" src="../../../assets/img/x.PNG" alt="" />
-        <img *ngIf="!classApplied" src="../../../assets/img/right.PNG" alt="" />
-    </a>
-    <div class="add-edit-navbar" [class.open]="classApplied">
-        <ul class="add-edit-navbar__list">
-            <li class="add-edit-navbar__item">
-                <a routerLink="/">
-                    <img class="d-block m-auto" src="../../../assets/img/x-red.PNG" alt="" />
-                    Anulla
-                </a>
-            </li>
-            <li class="add-edit-navbar__item">
-                <a href="#">
-                    <img class="d-block m-auto" src="../../../assets/img/link.PNG" alt="" />
-                    Evasione
-                </a>
-            </li>
-            <li class="add-edit-navbar__item">
-                <a (click)="showImgForm()">
-                    <img class="d-block m-auto" src="../../../assets/img/att.PNG" alt="" />
-                    Allegati
-                </a>
-            </li>
-            <li class="add-edit-navbar__item">
-                <a href="#">
-                    <img class="d-block m-auto" src="../../../assets/img/inp.PNG" alt="" />
-                    Assegna A
-                </a>
-            </li>
-            <li class="add-edit-navbar__item">
-                <a href="#">
-                    <img class="d-block m-auto" src="../../../assets/img/save.PNG" alt="" />
-                    Save
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
-<div id="imgForm" *ngIf="!isAddMode" class="add-edit pt-2 imgForm">
-  <div class="container">
-      <div class="add-edit__body">
-          <div class="add-edit-title">
-              <h1>Add Image</h1>
-          </div>
-          <form class="add-edit__form" [formGroup]="form" (ngSubmit)="onSubmit()">
-              <form class="img__form">
-                  <div class="form-group img__form-group">
-                      <fieldset class="form-group">
-                          <label class="add-edit__label">Add Image</label>
-                          {{ imageError }}
-                          <div class="custom-file fileInputProfileWrap">
-                              <input type="file" (change)="fileChangeEvent($event)" class="fileInputProfile" />
-                              <div class="img-space row m-auto">
-                                  <ng-container *ngIf="isImageSaved; else elseTemplate">
-                                      <img [src]="cardImageBase64" />
-                                  </ng-container>
-                                  <ng-template #elseTemplate>
-                                  <div class="col-6 mb-2 d-flex" *ngFor="let file of files">
-                                    <img [src]="file.allegato" class="img-responsive" />
-                                    <a class="img-responsive__delete" (click)="deleteImage(file.id)">
-                                      <img src="../../../assets/svg/times-circle-solid.svg" />
-                                    </a>
-                                  </div>
-                                  <div *ngIf="loading || !files" class="d-flex justify-content-center m-auto">
-                                    <div class="my-2">
-                                      <img src="../../../assets/svg/loader.svg" alt="" />
-                                    </div>
-                                  </div>
-                                  </ng-template>
-                              </div>
-                          </div>
-                      </fieldset>
-                      <a class="img__form-remove" (click)="removeImage()" *ngIf="isImageSaved">
-                          <img src="../../../assets/svg/times-circle-solid.svg" />
-                      </a>
-                  </div>
-                  <div>
-                    <a class="btn btn-success img__form-update" (click)="AddImage()" *ngIf="isImageSaved && !isAddMode">Add
-                      Image</a>
-                  </div>
-              </form>
-          </form>
-      </div>
-  </div>
-</div>
+<app-back-menu [classApplied]="classApplied" [isAddMode]="isAddMode" (showImgForm)="childEventClicked()"></app-back-menu>
+<!-- Modal -->
+<app-img-form [isAddMode]="isAddMode" [loading]="loading" [id]="id"></app-img-form>
 <div class="add-edit pt-2">
-    <div class="container">
-        <div class="add-edit__body">
-            <div class="add-edit-title">
-                <h1 *ngIf="isAddMode">Add Task</h1>
-                <h1 *ngIf="!isAddMode">Edit Task</h1>
-            </div>
-            <form class="add-edit__form" [formGroup]="form" (ngSubmit)="onSubmit()">
-                <div class="form-group">
-                    <label class="add-edit__label" for="subject">Subject</label>
-                    <input type="text" formControlName="subject" placeholder="Type..."
-                        class="form-control add-edit__input"
-                        [ngClass]="{ 'is-invalid': submitted && f.subject.errors }" />
-                    <div *ngIf="submitted && f.subject.errors" class="invalid-feedback">
-                        <div *ngIf="f.subject.errors.required">Subject is required</div>
-                    </div>
-                </div>
-                <div class="form-group add-edit__datepicker">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Enter a date range</mat-label>
-                        <mat-date-range-input [rangePicker]="picker">
-                            <input matStartDate formControlName="startDate" placeholder="Start date" />
-                            <input matEndDate formControlName="endDate" placeholder="End date" />
-                        </mat-date-range-input>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker></mat-date-range-picker>
-                    </mat-form-field>
-                </div>
-                <div class="form-group">
-                    <label class="add-edit__label" for="note">Anagrafiche</label>
-                    <select class="custom-select" formControlName="idAnagrafica">
-                        <option *ngFor="let anagrafiche of anagrafiches" [ngValue]="anagrafiche.id">
-                            {{ anagrafiche.code }}
-                            <div></div>
-                        </option>
-                        <div></div>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="add-edit__label" for="note">TaskType</label>
-                    <select class="custom-select" formControlName="idTaskType">
-                        <option *ngFor="let idTaskType of idTaskTypes" [ngValue]="idTaskType.id">
-                            {{ idTaskType.code }}
-                            <div></div>
-                        </option>
-                        <div></div>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="add-edit__label" for="note">Color picker</label>
-                    <select class="custom-select" formControlName="color">
-                        <option *ngFor="let color of colors" [ngValue]="color">
-                            {{ color }}
-                            <div></div>
-                        </option>
-                        <div></div>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="add-edit__label" for="note">Note</label>
-                    <textarea formControlName="note" rows="4" placeholder="Type..."
-                        class="form-control add-edit__textarea"
-                        [ngClass]="{ 'is-invalid': submitted && f.note.errors }"></textarea>
-                    <div *ngIf="submitted && f.note.errors" class="invalid-feedback">
-                        <div *ngIf="f.note.errors.required">Note is required</div>
-                    </div>
-                </div>
-                <div class="form-group m-0 text-center add-edit__submit">
-                    <button [disabled]="loading" class="btn btn-primary d-flex m-auto">
-                        <span *ngIf="loading">
-                            <div class="d-flex justify-content-center">
-                                <div id="loading" class="spinner-border mr-2" role="status">
-                                    <span class="sr-only"></span>
-                                </div>
-                            </div>
-                        </span>
-                        <span class="add-edit__submit-title" *ngIf="isAddMode">Add</span>
-                        <span class="add-edit__submit-title" *ngIf="!isAddMode">Update</span>
-                    </button>
-                </div>
-            </form>
+  <div class="container">
+    <div class="add-edit__body">
+      <div class="add-edit-title">
+        <h1 *ngIf="isAddMode">Add Task</h1>
+        <h1 *ngIf="!isAddMode">Edit Task</h1>
+      </div>
+      <form class="add-edit__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label class="add-edit__label" for="subject">Subject</label>
+          <input type="text" formControlName="subject" placeholder="Type..." class="form-control add-edit__input"
+            [ngClass]="{ 'is-invalid': submitted && f.subject.errors }" />
+          <div *ngIf="submitted && f.subject.errors" class="invalid-feedback">
+            <div *ngIf="f.subject.errors.required">Subject is required</div>
+          </div>
         </div>
-        <div *ngIf="error" class="alert alert-danger mt-3">
-            {{ error }}
+        <div class="form-group add-edit__datepicker">
+          <mat-form-field appearance="fill">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate formControlName="startDate" placeholder="Start date" />
+              <input matEndDate formControlName="endDate" placeholder="End date" />
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
         </div>
+        <div class="form-group">
+          <label class="add-edit__label" for="note">Anagrafiche</label>
+          <select class="custom-select" formControlName="idAnagrafica">
+            <option *ngFor="let anagrafiche of anagrafiches" [ngValue]="anagrafiche.id">
+              {{ anagrafiche.code }}
+              <div></div>
+            </option>
+            <div></div>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="add-edit__label" for="note">TaskType</label>
+          <select class="custom-select" formControlName="idTaskType">
+            <option *ngFor="let idTaskType of idTaskTypes" [ngValue]="idTaskType.id">
+              {{ idTaskType.code }}
+              <div></div>
+            </option>
+            <div></div>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="add-edit__label" for="note">Color picker</label>
+          <select class="custom-select" formControlName="color">
+            <option *ngFor="let color of colors" [ngValue]="color">
+              {{ color }}
+              <div></div>
+            </option>
+            <div></div>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="add-edit__label" for="note">Note</label>
+          <textarea formControlName="note" rows="4" placeholder="Type..." class="form-control add-edit__textarea"
+            [ngClass]="{ 'is-invalid': submitted && f.note.errors }"></textarea>
+          <div *ngIf="submitted && f.note.errors" class="invalid-feedback">
+            <div *ngIf="f.note.errors.required">Note is required</div>
+          </div>
+        </div>
+        <div class="form-group m-0 text-center add-edit__submit">
+          <button [disabled]="loading" class="btn btn-primary d-flex m-auto">
+            <span *ngIf="loading">
+              <div class="d-flex justify-content-center">
+                <div id="loading" class="spinner-border mr-2" role="status">
+                  <span class="sr-only"></span>
+                </div>
+              </div>
+            </span>
+            <span class="add-edit__submit-title" *ngIf="isAddMode">Add</span>
+            <span class="add-edit__submit-title" *ngIf="!isAddMode">Update</span>
+          </button>
+        </div>
+      </form>
     </div>
+    <div *ngIf="error" class="alert alert-danger mt-3">
+      {{ error }}
+    </div>
+  </div>
 </div>

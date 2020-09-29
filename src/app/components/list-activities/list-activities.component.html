@@ -1,14 +1,4 @@
-<div class="sync">
-  <div class="container">
-    <div class="sync-card">
-      <div class="sync-header">Last Sync</div>
-      <div @myInsertRemoveTrigger class="sync-body">
-        <span *ngIf="!isLoading">------</span>
-        <span *ngIf="isLoading">{{ lastSync | date: "medium" }}</span>
-      </div>
-    </div>
-  </div>
-</div>
+<app-sync [isLoading]="isLoading" [lastSync]="lastSync"></app-sync>
 <div class="tasks">
   <div class="container">
     <div *ngIf="isEmpty" class="alert alert-danger">No Tasks Found</div>
@@ -23,12 +13,10 @@
         </a>
       </div>
       <div @myInsertRemoveTrigger *ngIf="!isLoading" class="d-flex justify-content-center">
-        <div class="my-2">
-          <img src="../../../assets/svg/loader.svg" alt="" />
-        </div>
+        <app-spinner></app-spinner>
       </div>
       <div id="pullTasks">
-        <ul [@listAnimation]="tasks.length" @myInsertRemoveTrigger *ngIf="isLoading" class="tasks-list mb-4">
+        <ul [@listAnimation] @myInsertRemoveTrigger *ngIf="isLoading" class="tasks-list mb-4">
           <li @myInsertRemoveTrigger class="tasks-item d-flex" *ngFor="
               let task of tasks
                 | paginate

@@ -44,8 +44,8 @@
   }
 
   &__body {
+    border-radius: 8px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius: 5px;
   }
 
   &__datepicker {
@@ -203,10 +203,6 @@
   cursor: not-allowed!important;
 }
 
-.imgForm{
-  display: none;
-}
-
 .img__form {
   &-group{
     position: relative;
@@ -214,7 +210,7 @@
 
   &-remove{
     position: absolute;
-    top: 45px;
+    top: 15px;
     right: 15px;
     z-index: 100;
   }

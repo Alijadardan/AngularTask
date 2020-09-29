@@ -1,26 +1,16 @@
-import { listAnimation } from './../../animations';
+import { listAnimation, fadeinAnimation } from './../../animations';
 import { TasksService } from './../../services/tasks.service';
-import { Component, ComponentFactoryResolver, Input, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import PullToRefresh from 'pulltorefreshjs';
-import { trigger, transition, animate, style } from '@angular/animations';
 import Task from 'src/app/models/task';
 import Swal from 'sweetalert2';
-declare var $:any;
+
 
 @Component({
   selector: 'app-list-activities',
   animations: [
-    trigger('myInsertRemoveTrigger', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('700ms', style({ opacity: 1 })),
-      ]),
-      transition(':leave', [
-        animate('0ms', style({ opacity: 0 }))
-      ])
-    ]),
-    listAnimation
+    fadeinAnimation,
+    listAnimation,
   ],
   templateUrl: './list-activities.component.html',
   styleUrls: ['./list-activities.component.scss']
@@ -38,17 +28,15 @@ export class ListActivitiesComponent implements OnInit {
   }
   lastSync = "";
 
-  constructor(private tasksService: TasksService, private router: Router,
-    private viewContainerRef: ViewContainerRef,
-    private cfr: ComponentFactoryResolver) { }
+  constructor(private tasksService: TasksService, private router: Router) { }
 
   ngOnInit(): void {
     this.currentPageNumber();
     this.retriveTasks();
-    // PullToRefresh.init({
-    //   mainElement: '#pullTasks', // above which element?
-    //   onRefresh: this.refreshList()
-    // });
+  }
+
+  test(){
+    console.log("test");
   }
 
   retriveTasks() {
@@ -72,7 +60,6 @@ export class ListActivitiesComponent implements OnInit {
     this.tasksService.getTasks(this.params).subscribe((data) => {
       this.setDate();
       if (data) {
-        console.log(data)
         this.tasks = data.data;
         this.setLocalTasks(data);
         this.isLoading = true;
@@ -166,30 +153,37 @@ export class ListActivitiesComponent implements OnInit {
         icon: 'error'
       });
     }else{
-      this.isLoading = false;
-      this.showPagination = false;
-      this.tasksService.deleteTask(id).subscribe({
-        next: () => {
-          this.isLoading = false;
-          this.showPagination = true;
-          Swal.fire({
-            text: 'Task Deleted Successfully',
-            icon: 'success'
+      let placeholder;
+      Swal.fire({
+        title: 'Are you sure you want to delete this item!',
+        showCancelButton: true,
+        confirmButtonText: `Delete`,
+        cancelButtonText: `Cancel`,
+        icon: 'question',
+        confirmButtonColor: '#FF0000',
+      }).then((result) => {
+        if(result.isConfirmed){
+          this.tasks = this.tasks.filter(function(obj){
+            if(obj.idTask == id){
+              placeholder = obj;
+            }
+            return obj.idTask !== id;
           });
-          this.clearChache();
-          this.retriveHttpTasks();
-        },
-        error: error => {
-          this.isLoading = true;
-          this.showPagination = false;
-          // this.error = error;
-          Swal.fire({
-            text: 'Something went Wrong',
-            icon: 'error'
+
+          this.tasksService.deleteTask(id).subscribe({
+            next: () => {
+              console.log("Deleted");
+            },
+            error: error => {
+              this.tasks.push(placeholder);
+              Swal.fire({
+                text: 'Something went Wrong',
+                icon: 'error'
+              });
+            }
           });
         }
-      });
+      })
     }
-
   }
 }

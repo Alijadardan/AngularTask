@@ -1,0 +1,11 @@
+<div class="sync">
+  <div class="container">
+    <div class="sync-card">
+      <div class="sync-header">Last Sync</div>
+      <div @myInsertRemoveTrigger class="sync-body">
+        <span *ngIf="!isLoading">------</span>
+        <span *ngIf="isLoading">{{ lastSync | date: "medium" }}</span>
+      </div>
+    </div>
+  </div>
+</div>

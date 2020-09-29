@@ -1,4 +1,5 @@
 export default interface Task {
+    idTask?: number;
     idAnagrafica: number,
     startDate: string,
     endDate: string,

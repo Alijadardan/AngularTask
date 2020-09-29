@@ -47,7 +47,7 @@
                                 Incorrect username or password
                             </div>
                             <div *ngIf="loading" class="d-flex justify-content-center">
-                              <img src="../../../assets/svg/loader.svg" alt="" />
+                              <app-spinner></app-spinner>
                             </div>
                             <div *ngFor="let company of companies">
                                 <label>

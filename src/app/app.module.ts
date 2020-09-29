@@ -24,10 +24,11 @@ import { environment } from '../environments/environment';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { CommonNavbarComponent } from './components/common-navbar/common-navbar.component';
-import { ImageFormComponent } from './components/image-form/image-form.component';
-
-
-
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { SyncComponent } from './components/sync/sync.component';
+import { BackMenuComponent } from './components/back-menu/back-menu.component';
+import { ImgFormComponent } from './components/img-form/img-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +40,9 @@ import { ImageFormComponent } from './components/image-form/image-form.component
     TutorialComponent,
     NavbarComponent,
     CommonNavbarComponent,
-    ImageFormComponent,
+    SyncComponent,
+    BackMenuComponent,
+    ImgFormComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -53,7 +56,9 @@ import { ImageFormComponent } from './components/image-form/image-form.component
     MatFormFieldModule,
     NgxPaginationModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    RouterModule
+    RouterModule,
+    MatTableModule,
+    MatPaginatorModule
   ],
   providers: [
     AuthGuard,

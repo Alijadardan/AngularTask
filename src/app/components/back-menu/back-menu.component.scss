@@ -1,0 +1,40 @@
+.back {
+  &-menu {
+    padding: 15px;
+    background-color: white;
+    a {
+      img {
+        width: 46px;
+        height: 46px;
+      }
+    }
+  }
+
+  &-navbar {
+    display: none;
+    margin: auto;
+    &__list {
+      list-style: none;
+      display: flex;
+      padding: 0;
+      margin: auto;
+    }
+
+    &__item {
+      padding: 0 5px;
+      a {
+        font-size: 12px;
+        text-decoration: none;
+        color: black;
+        img {
+          width: 26px;
+          height: 26px;
+        }
+      }
+    }
+  }
+
+  &-navbar.open {
+    display: flex;
+  }
+}

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ImageFormComponent } from './image-form.component';
+import { SyncComponent } from './sync.component';
 
-describe('ImageFormComponent', () => {
-  let component: ImageFormComponent;
-  let fixture: ComponentFixture<ImageFormComponent>;
+describe('SyncComponent', () => {
+  let component: SyncComponent;
+  let fixture: ComponentFixture<SyncComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ImageFormComponent ]
+      declarations: [ SyncComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ImageFormComponent);
+    fixture = TestBed.createComponent(SyncComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
