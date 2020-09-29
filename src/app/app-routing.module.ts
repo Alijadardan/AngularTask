@@ -1,11 +1,11 @@
 import { DirtyCheckGuard } from './auth/dirty-chech.guard';
-import { TutorialComponent } from './tutorial/tutorial.component';
 import { AddEditActivitiesComponent } from './components/add-edit-activities/add-edit-activities.component';
 import { AuthGuard } from './auth/auth.guard';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { TutorialComponent } from './pages/tutorial/tutorial.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard], data: {animation: 'HomePage'} },

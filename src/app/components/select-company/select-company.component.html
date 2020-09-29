@@ -1,0 +1,20 @@
+<div class="dropdown ml-2 d-flex">
+  <button
+    class="btn btn-secondary dropdown-toggle"
+    type="button"
+    id="dropdownMenuButton"
+    data-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+  >
+    {{ selectedCompany }}
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a
+      *ngFor="let company of companies"
+      (click)="changeCompany(company.id, company.name)"
+      class="dropdown-item"
+      >{{ company.name }}</a
+    >
+  </div>
+</div>

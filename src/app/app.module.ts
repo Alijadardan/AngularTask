@@ -18,7 +18,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { TutorialComponent } from './tutorial/tutorial.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { RouterModule } from '@angular/router';
@@ -29,6 +28,10 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { SyncComponent } from './components/sync/sync.component';
 import { BackMenuComponent } from './components/back-menu/back-menu.component';
 import { ImgFormComponent } from './components/img-form/img-form.component';
+import { SelectCompanyComponent } from './components/select-company/select-company.component';
+import { WelcomeMessageComponent } from './components/welcome-message/welcome-message.component';
+import { LogoutComponent } from './components/logout/logout.component';
+import { TutorialComponent } from './pages/tutorial/tutorial.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,6 +46,9 @@ import { ImgFormComponent } from './components/img-form/img-form.component';
     SyncComponent,
     BackMenuComponent,
     ImgFormComponent,
+    SelectCompanyComponent,
+    WelcomeMessageComponent,
+    LogoutComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

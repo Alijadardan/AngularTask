@@ -1,4 +1,4 @@
-import { TutorialService } from './../services/tutorial.service';
+import { TutorialService } from '@services/tutorial.service';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 

@@ -1,9 +1,8 @@
-import { UserService } from '../../services/user.service';
+import { UserService } from '@services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',

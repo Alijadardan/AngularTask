@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Event } from '@angular/router';
 import * as _ from 'lodash';
-import { ImageUploadService } from 'src/app/services/image-upload.service';
+import { ImageUploadService } from '@services/image-upload.service';
 import Swal from 'sweetalert2';
 
 @Component({

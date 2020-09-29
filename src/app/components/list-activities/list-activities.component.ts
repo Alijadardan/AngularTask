@@ -1,5 +1,5 @@
 import { listAnimation, fadeinAnimation } from './../../animations';
-import { TasksService } from './../../services/tasks.service';
+import { TasksService } from '@services/tasks.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Task from 'src/app/models/task';

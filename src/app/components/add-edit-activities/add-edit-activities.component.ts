@@ -1,5 +1,5 @@
 import { ImgFormComponent } from './../img-form/img-form.component';
-import { TasksService } from './../../services/tasks.service';
+import { TasksService } from '@services/tasks.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
