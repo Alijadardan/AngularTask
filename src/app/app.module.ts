@@ -1,7 +1,7 @@
 import { MatNativeDateModule } from '@angular/material/core';
 import { AuthGuard } from './auth/auth.guard';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 
@@ -32,6 +32,15 @@ import { SelectCompanyComponent } from './components/select-company/select-compa
 import { WelcomeMessageComponent } from './components/welcome-message/welcome-message.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { TutorialComponent } from './pages/tutorial/tutorial.component';
+import * as Hammer from 'hammerjs';
+import { HammerModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+
+@Injectable()
+export class MyHammerConfig extends HammerGestureConfig {
+  overrides = <any> {
+    swipe: { direction: Hammer.DIRECTION_ALL },
+  };
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +73,8 @@ import { TutorialComponent } from './pages/tutorial/tutorial.component';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     RouterModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    HammerModule
   ],
   providers: [
     AuthGuard,
@@ -72,7 +82,11 @@ import { TutorialComponent } from './pages/tutorial/tutorial.component';
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
-    }
+    },
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: MyHammerConfig,
+    },
   ],
   bootstrap: [AppComponent]
 })

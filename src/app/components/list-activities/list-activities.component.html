@@ -12,12 +12,12 @@
           <img src="../../../assets/svg/sync-alt-solid.svg" alt="" />
         </a>
       </div>
-      <div @myInsertRemoveTrigger *ngIf="!isLoading" class="d-flex justify-content-center">
-        <app-spinner></app-spinner>
-      </div>
-      <div id="pullTasks">
-        <ul [@listAnimation] @myInsertRemoveTrigger *ngIf="isLoading" class="tasks-list mb-4">
-          <li @myInsertRemoveTrigger class="tasks-item d-flex" *ngFor="
+      <div #pullTasks id="pullTasks">
+        <div @myInsertRemoveTrigger *ngIf="!isLoading" class="d-flex justify-content-center">
+          <app-spinner></app-spinner>
+        </div>
+        <ul #list [@listAnimation] (swipedown)="swipeToRefresh($event)" @myInsertRemoveTrigger class="tasks-list">
+          <li #item (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)" @myInsertRemoveTrigger class="tasks-item d-flex show-delete_back" *ngFor="
               let task of tasks
                 | paginate
                   : {
@@ -33,7 +33,7 @@
               <img *ngIf="task.canBeDeleted" src="../../../assets/svg/trash-solid.svg" alt="" />
               <img *ngIf="!task.canBeDeleted" src="../../../assets/svg/trash-solid-disable.svg" alt="" />
             </a>
-            <span class="tasks-item__title ml-2">
+            <span id="note" class="tasks-item__title ml-2">
               {{ task.note }}
             </span>
             <span class="tasks-item__date ml-auto">
@@ -43,7 +43,7 @@
         </ul>
       </div>
     </div>
-    <div @myInsertRemoveTrigger *ngIf="showPagination || isLoading" class="pagination-controls">
+    <div @myInsertRemoveTrigger *ngIf="showPagination || isLoading" class="pagination-controls mt-4">
       <pagination-controls directionLinks="true" previousLabel="Prev" nextLabel="Next" maxSize="5"
         (pageChange)="handlePageChange($event)" (pageBoundsCorrection)="pageChanged($event)"></pagination-controls>
     </div>

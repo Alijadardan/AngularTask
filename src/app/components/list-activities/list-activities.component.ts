@@ -1,9 +1,12 @@
 import { listAnimation, fadeinAnimation } from './../../animations';
 import { TasksService } from '@services/tasks.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import Task from 'src/app/models/task';
 import Swal from 'sweetalert2';
+import 'swiper/swiper-bundle.css';
+import PullToRefresh from 'pulltorefreshjs';
+import { of } from 'rxjs';
 
 
 @Component({
@@ -15,6 +18,7 @@ import Swal from 'sweetalert2';
   templateUrl: './list-activities.component.html',
   styleUrls: ['./list-activities.component.scss']
 })
+
 export class ListActivitiesComponent implements OnInit {
   tasks: Task[];
   isEmpty: boolean = false;
@@ -27,13 +31,103 @@ export class ListActivitiesComponent implements OnInit {
     totalPage: 0
   }
   lastSync = "";
+  @ViewChild('item') item;
+  @ViewChild('list') list;
+  @ViewChild('pullTasks') pullTasks;
 
   constructor(private tasksService: TasksService, private router: Router) { }
 
   ngOnInit(): void {
     this.currentPageNumber();
     this.retriveTasks();
+    PullToRefresh.init({
+      mainElement: '#pullTasks', // above which element?
+      onRefresh: (done) => {
+        this.isLoading = false;
+        this.showPagination = false;
+        this.clearChache();
+        this.retriveHttpTasks();
+        if(this.isLoading){
+          done();
+        }
+      }
+    });
   }
+
+  ngAfterViewInit(){
+    // console.log(this.list);
+    // let obj = new Hammer(this.pullTasks.nativeElement);
+    // console.log(obj);
+    // obj.add(new Hammer.Pan({ direction: Hammer.DIRECTION_ALL, threshold: 0, pointers: 1 }));
+    // obj.on("pan", handleDrag);
+
+    // var lastPosX = 0;
+    // var lastPosY = 0;
+    // var isDragging = false;
+    // var loading;
+    // function handleDrag(ev) {
+
+    //   var elem = ev.target;
+
+    //   if (!isDragging) {
+    //     isDragging = true;
+    //     lastPosX = elem.offsetLeft;
+    //     lastPosY = elem.offsetTop;
+    //   }
+
+    //   var posX = ev.deltaX;
+    //   var posY = ev.deltaY;
+
+    //   if(posY > 100){
+    //     console.log("loadinggggg");
+
+    //     elem.style.top = 0 + "px";
+    //   }else{
+    //     elem.style.left = lastPosX;
+    //     elem.style.top = posY + "px";
+    //   }
+
+    //   if(posY < 0){
+    //     elem.style.top = 0 + "px";
+    //   }
+
+
+    //   if (ev.isFinal) {
+    //     isDragging = false;
+    //   }
+    //   console.log(lastPosX, lastPosY, isDragging);
+    // }
+
+    // this.isLoading = loading;
+  }
+
+  onSwipeLeft(evt) {
+    evt.target.classList.add("show-delete");
+    var siblings = [];
+    var sibling = evt.target.parentNode.firstChild;
+    var skipMe = evt.target;
+
+    while (sibling) {
+      if (sibling !== skipMe && sibling.nodeType === 1)
+        siblings.push(sibling);
+      sibling = sibling.nextElementSibling || sibling.nextSibling;
+    }
+    siblings.forEach(element => {
+      element.classList.remove("show-delete");
+    });
+  }
+
+  onSwipeRight(evt) {
+    evt.target.classList.remove("show-delete");
+  }
+
+  swipeToRefresh(evt) {
+    // evt.target.parentNode.classList.add("show-refresh");
+    // this.isLoading = false;
+    // this.retriveHttpTasks();
+    // evt.target.parentNode.classList.remove("show-refresh");
+  }
+
 
   retriveTasks() {
     if (localStorage.getItem('tasks' + this.params.pageNumber)) {
@@ -114,14 +208,15 @@ export class ListActivitiesComponent implements OnInit {
   }
 
   refreshList() {
-    this.isLoading = false;
-    this.showPagination = false;
-    this.clearChache();
-    this.retriveHttpTasks();
+
+    // this.isLoading = false;
+    // this.showPagination = false;
+    // this.clearChache();
+    // this.retriveHttpTasks();
   }
 
   currentPageNumber() {
-    if (localStorage.getItem('currentPage')) {
+    if (localStorage.getItem('currentPage') && localStorage.getItem('currentPage') == null) {
       this.params.pageNumber = parseInt(localStorage.getItem('currentPage'));
     } else {
       this.params.pageNumber = 1;
@@ -143,7 +238,7 @@ export class ListActivitiesComponent implements OnInit {
   }
 
 
-  canBeDeleted(id, canbedeleted){
+  canBeDeleted(id, canbedeleted) {
     if (!canbedeleted) {
       Swal.fire({
         text: 'This Task can not be deleted',
@@ -154,7 +249,7 @@ export class ListActivitiesComponent implements OnInit {
     }
   }
 
-  confirmDelete(id){
+  confirmDelete(id) {
     Swal.fire({
       title: 'Are you sure you want to delete this item!',
       showCancelButton: true,

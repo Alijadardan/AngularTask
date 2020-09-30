@@ -26,13 +26,17 @@
     padding: 0;
     list-style: none;
     border-radius: 5px;
+    overflow: hidden;
+    position: relative;
   }
 
   &-item {
     padding: 10px 15px;
     border: 1px solid lightgray;
     background-color: white;
-
+    transition: 300ms;
+    -webkit-transition: 300ms;
+    -moz-transition: 300ms;
     &__date {
       font-size: 12px;
       color: #8b8b8b;
@@ -52,4 +56,28 @@
       border-top: none;
     }
   }
+}
+
+.show-delete {
+  left: -40px !important;
+  .delete-button {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.delete-button {
+  position: absolute;
+  right: -27px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 2s, opacity 2s;
+}
+
+.show-delete_back {
+  transition: 800ms;
+  -webkit-transition: 800ms;
+  -moz-transition: 800ms;
+  position: relative;
+  left: 0px;
 }

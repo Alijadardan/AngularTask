@@ -5,6 +5,9 @@ import Swal from 'sweetalert2';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import 'hammerjs';
+import 'swiper';
+import 'swiper/swiper-bundle.css';
 
 
 if (environment.production) {
