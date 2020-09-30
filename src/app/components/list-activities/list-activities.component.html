@@ -16,8 +16,9 @@
         <div @myInsertRemoveTrigger *ngIf="!isLoading" class="d-flex justify-content-center">
           <app-spinner></app-spinner>
         </div>
-        <ul #list [@listAnimation] (swipedown)="swipeToRefresh($event)" @myInsertRemoveTrigger class="tasks-list">
-          <li #item (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)" @myInsertRemoveTrigger class="tasks-item d-flex show-delete_back" *ngFor="
+        <ul #list [@listAnimation] @myInsertRemoveTrigger class="tasks-list">
+          <li #item (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)" @myInsertRemoveTrigger
+            class="tasks-item d-flex show-delete_back" *ngFor="
               let task of tasks
                 | paginate
                   : {
@@ -29,7 +30,7 @@
             <a routerLink="edit/{{ task.idTask }}">
               <img src="../../../assets/svg/edit.svg" alt="" />
             </a>
-            <a class="ml-2" (click)="canBeDeleted(task.idTask, task.canBeDeleted)">
+            <a class="ml-2 delete-button" #deleteButton (click)="canBeDeleted(task.idTask, task.canBeDeleted)">
               <img *ngIf="task.canBeDeleted" src="../../../assets/svg/trash-solid.svg" alt="" />
               <img *ngIf="!task.canBeDeleted" src="../../../assets/svg/trash-solid-disable.svg" alt="" />
             </a>
