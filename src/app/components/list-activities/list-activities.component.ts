@@ -149,11 +149,11 @@ export class ListActivitiesComponent implements OnInit {
   }
 
   refreshList() {
-
-    // this.isLoading = false;
-    // this.showPagination = false;
-    // this.clearChache();
-    // this.retriveHttpTasks();
+    //refresh list by button
+    this.isLoading = false;
+    this.showPagination = false;
+    this.clearChache();
+    this.retriveHttpTasks();
   }
 
   currentPageNumber() {
