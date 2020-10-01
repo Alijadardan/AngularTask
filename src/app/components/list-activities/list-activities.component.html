@@ -44,8 +44,8 @@
         </ul>
       </div>
     </div>
-    <div @myInsertRemoveTrigger *ngIf="showPagination || isLoading" class="pagination-controls mt-4">
-      <pagination-controls directionLinks="true" previousLabel="Prev" nextLabel="Next" maxSize="5"
+    <div @myInsertRemoveTrigger *ngIf="showPagination || isLoading" class="pagination mt-3 d-flex justify-content-center">
+      <pagination-controls class="pagination-controls" directionLinks="true" previousLabel="Prev" nextLabel="Next" maxSize="5"
         (pageChange)="handlePageChange($event)" (pageBoundsCorrection)="pageChanged($event)"></pagination-controls>
     </div>
   </div>

@@ -27,7 +27,6 @@
     list-style: none;
     border-radius: 5px;
     overflow: hidden;
-    position: relative;
   }
 
   &-item {
@@ -80,4 +79,10 @@
   -moz-transition: 800ms;
   position: relative;
   left: 0px;
+}
+
+.pagination {
+  &-controls {
+    margin-left: -40px;
+  }
 }
