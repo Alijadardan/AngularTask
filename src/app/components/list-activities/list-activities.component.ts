@@ -40,7 +40,8 @@ export class ListActivitiesComponent implements OnInit {
     this.retriveTasks();
     PullToRefresh.init({
       mainElement: '#pullTasks', // above which element?
-      instructionsRefreshing: " ",
+      instructionsRefreshing: "Release to refresh",
+      iconRefreshing: "⇡",
       onRefresh: () => {
         this.isLoading = false;
         this.clearChache();

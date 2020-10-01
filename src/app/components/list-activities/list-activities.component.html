@@ -13,7 +13,7 @@
         </a>
       </div>
       <div #pullTasks id="pullTasks">
-        <div @myInsertRemoveTrigger *ngIf="!isLoading" class="d-flex justify-content-center">
+        <div *ngIf="!isLoading" class="d-flex justify-content-center">
           <app-spinner></app-spinner>
         </div>
         <ul #list [@listAnimation] @myInsertRemoveTrigger class="tasks-list">
