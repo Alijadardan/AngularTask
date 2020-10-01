@@ -1,2 +1,5 @@
 <app-navbar></app-navbar>
 <app-list-activities></app-list-activities>
+<button class="btn btn-primary d-flex m-auto" *ngIf="Pwa.promptEvent" (click)="installPwa()">
+  Install App
+</button>

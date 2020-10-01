@@ -1,3 +1,4 @@
+import { PWAServiceService } from './../../pwaservice.service';
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private title: Title) {}
+  constructor(private title: Title, public Pwa: PWAServiceService) {}
 
   ngOnInit(): void {
     this.title.setTitle("Angular Home");
+  }
+
+  installPwa(): void {
+    this.Pwa.promptEvent.prompt();
   }
 }
