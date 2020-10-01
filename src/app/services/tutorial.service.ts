@@ -11,15 +11,16 @@ export class TutorialService {
   constructor(private http: HttpClient) { }
 
   getInfo() {
-    return this.http.get<any>(this.baseUrl + "/GetTutorial", {
-        headers: new HttpHeaders({
-                  'Content-Type': 'text/plain; charset=utf-8',
-                  'Content-Encoding': 'gzip',
-                  'Vary': 'Accept-Encoding',
-                  'Server': 'Microsoft-IIS/10.0',
-                  'X-Powered-By': 'ASP.NET',
-                  'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
-                  'responseType': 'text',})
-    });
+    const httpOptionsText = {
+      headers: new HttpHeaders({
+        Accept: "text/plain",
+        "Content-Type": "text/plain",
+        'Authorization': 'Bearer ' + localStorage.getItem('userToken')
+      }),
+      responseType: "text" as "json"
+    };
+    return this.http.get<any>(this.baseUrl + "/GetTutorial",
+    httpOptionsText
+    );
   }
 }
