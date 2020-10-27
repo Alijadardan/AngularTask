@@ -1,7 +1,8 @@
 # AgendaAngular
 
-A CRDU project with Angular which include handling data and http requests, error handling , routing , lazy Loading, reactive forms and template driven forms, auth etc.
+A CRDU project with Angular which include handling data and http requests, error handling , routing , lazy Loading, reactive forms and template driven forms, auth, Sweet Alerts, Animations for components and routing animation etc.
 Use of pulltorefresh.js , hammer.js, etc.
+Handling CRUD for Img Files for each task.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.0-next.0.
 
